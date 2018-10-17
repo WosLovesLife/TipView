@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TipView</string>
+    <string name="btn_1">Dismiss</string>
+    <string name="btn_2">Show tip</string>
+    <string name="tutorial_gc_toggle">Tap here the button to dismiss</string>
+</resources>

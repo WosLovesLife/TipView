@@ -32,6 +32,9 @@ public class ShowcaseView extends View {
     private Canvas mBufferCanvas;
     private PorterDuffXfermode mXfermode;
 
+    int mTopOffset = 0;
+    int mLeftOffset = 0;
+
     private int mStatusBarOffset;
 
     public static class Exhibit {
@@ -148,6 +151,11 @@ public class ShowcaseView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
+        final int[] loc = new int[2];
+        getLocationOnScreen(loc);
+        mLeftOffset = loc[0];
+        mTopOffset = loc[1];
+
         mBitmapBuffer = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
         mBufferCanvas = new Canvas(mBitmapBuffer);
     }
@@ -163,8 +171,8 @@ public class ShowcaseView extends View {
         mPaint.setXfermode(mXfermode);
         for (Exhibit exhibit : mExhibits) {
             RectF rectF = new RectF(exhibit.mRectF);
-            rectF.top -= mStatusBarOffset;
-            rectF.bottom -= mStatusBarOffset;
+            rectF.top -= mTopOffset;
+            rectF.bottom -= mTopOffset;
             switch (exhibit.mShape) {
                 case SHAPE_OVAL:
                     mBufferCanvas.drawOval(rectF, mPaint);

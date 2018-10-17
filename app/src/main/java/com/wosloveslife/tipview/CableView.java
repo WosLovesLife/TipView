@@ -32,6 +32,9 @@ public class CableView extends View {
     Note mAnchor;
     Note mTarget;
 
+    int mTopOffset = 0;
+    int mLeftOffset = 0;
+
     private Path mLinePath;
 
     public static class Note {
@@ -128,6 +131,11 @@ public class CableView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+
+        final int[] loc = new int[2];
+        getLocationOnScreen(loc);
+        mLeftOffset = loc[0];
+        mTopOffset = loc[1];
     }
 
     private float currentValue = 0;     // 用于纪录当前的位置,取值范围[0,1]映射Path的整个长度
@@ -274,9 +282,19 @@ public class CableView extends View {
 //        mTarget.mPoint = new Point();
 //        mTarget.mPoint.x = targetLocation[0] + (leftOf ? mTarget.mView.getWidth() : 0);
 //        mTarget.mPoint.y = targetLocation[1] + (above ? mTarget.mView.getHeight() : 0) - mStatusBarOffset; // TODO: 17/7/25 减去StatusBar高度
+
+        int width = mTarget.mView.getWidth();
+        int height = mTarget.mView.getHeight();
+        int size;
+        if (width > height) {
+            size = width;
+        } else {
+            size = height;
+        }
+
         mTarget.mPoint = new Point();
-        mTarget.mPoint.x = targetLocation[0] + mTarget.mView.getWidth() / 2;
-        mTarget.mPoint.y = targetLocation[1] + mTarget.mView.getHeight() / 2;
+        mTarget.mPoint.x = targetLocation[0] + size / 2;
+        mTarget.mPoint.y = targetLocation[1] + size / 2 - mTopOffset;
     }
 
     public void update() {
